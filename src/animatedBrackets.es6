@@ -11,35 +11,48 @@
     $.fn.animatedBrackets = function (options) {
 
         let settings = $.extend({
-            ratio_x: 16,
-            ratio_y: 9
+            start_side: 'left',
+            points: [
+                '0 20, 0 0, 100 0, 100 20',
+                '100 80, 100 100, 0 100, 0 80'
+            ]
         }, options);
+
+
+        let brackets_config = [];
+
+        //generate brackets config
+        settings.points.forEach(function(points_str){
+
+            let brackets_points = points_str.split(', ');
+
+            let bracket_points_arr = [];
+
+            brackets_points.forEach(function (item) {
+
+                bracket_points_arr.push(item.split(' '));
+
+            });
+
+            brackets_config.push({points: bracket_points_arr});
+        });
 
 
         $(this).each(function () {
 
+            let $this = $(this),
+                $this_width = 0,
+                $this_height = 0,
 
-            let $this = $(this);
+                stroke_width = 5,
 
-            let $this_width = $this.outerWidth();
-            let $this_height = Math.round($this.outerHeight());
-
-            let bracket_height = 50;
-            let stroke_width = 5;
-
-            let top_bracket, bottom_bracket;
-
-            console.log($this_width);
-
-
-            let svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
-
+                svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
 
             $this.append(svgElement);
 
             $this.css({
                 position: 'relative'
-            })
+            });
 
             svgElement.css({
                 width: '100%',
@@ -48,84 +61,46 @@
                 left: 0,
                 top: 0,
                 overflow: 'visible'
-            })
+            });
 
 
-            top_bracket = document.createElementNS("http://www.w3.org/2000/svg", 'polyline'); //Create a path in SVG's namespace
-            bottom_bracket = document.createElementNS("http://www.w3.org/2000/svg", 'polyline'); //Create a path in SVG's namespace
+            brackets_config.forEach(function(bracket){
 
-            draw_brackets();
+                bracket.element = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
 
+                svgElement.append(bracket.element);
 
-            $(window).on('load resize', function(){
+            });
+
+            $(window).on('load resize', function () {
                 $this_width = $this.outerWidth();
-                $this_height = Math.round($this.outerHeight());
+                $this_height = $this.outerHeight();
 
                 draw_brackets();
 
-            })
+            });
+
 
             function draw_brackets() {
 
+                brackets_config.forEach(function(bracket){
 
-                top_bracket = draw_polyline({
-                    element: top_bracket,
-                    stroke_width: stroke_width,
-                    points: [
-                        {
-                            x: 0,
-                            y: bracket_height
-                        },
-                        {
-                            x: 0,
-                            y: 0
-                        },
-                        {
-                            x: $this_width,
-                            y: 0
-                        },
-                        {
-                            x: $this_width,
-                            y: bracket_height
-                        }
+                    draw_polyline({
+                        element: bracket.element,
+                        stroke_width: stroke_width,
+                        points: bracket.points,
+                        element_width: $this_width,
+                        element_height: $this_height,
+                    })
 
-                    ]
-                });
-
-                bottom_bracket = draw_polyline({
-                    element: bottom_bracket,
-                    stroke_width: stroke_width,
-                    points: [
-                        {
-                            x: 0,
-                            y: $this_height - bracket_height
-                        },
-                        {
-                            x: 0,
-                            y: $this_height
-                        },
-                        {
-                            x: $this_width,
-                            y: $this_height
-                        },
-                        {
-                            x: $this_width,
-                            y: $this_height - bracket_height
-                        }
-
-                    ]
                 });
 
             }
-
-            svgElement.append(top_bracket);
-            svgElement.append(bottom_bracket);
 
         });
 
 
         function draw_polyline(settings) {
-
 
             let element = settings.element;
 
@@ -134,7 +109,7 @@
             let points_str = '';
 
             points.forEach(function (item) {
-                points_str += item.x + ", " + item.y + " "
+                points_str += settings.element_width / 100 * item[0] + ", " + settings.element_height / 100 * item[1] + " "
             });
 
             element.setAttribute("points", points_str);
