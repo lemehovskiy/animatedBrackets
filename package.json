@@ -1,10 +1,11 @@
 {
-  "name": "video_background",
+  "name": "animated_brackets",
   "version": "1.0.0",
-  "description": "video background",
+  "description": "animated brackets",
   "main": "index.js",
   "dependencies": {
-    "jquery": ">=1.7"
+    "jquery": ">=1.7",
+    "gsap" : "1.20.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -28,15 +29,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "video",
-    "html5 video",
-    "youtube video",
-    "video background",
+    "svg",
+    "animation",
+    "brackets",
+    "gsap",
     "jquery"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lemehovskiy/videoBackground"
+    "url": "https://github.com/lemehovskiy/animatedBrackets"
   },
   "author": "lemehovskiy",
   "license": "ISC"
