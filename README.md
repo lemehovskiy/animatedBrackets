@@ -9,7 +9,10 @@ animatedBrackets
 
 Option | Type | Default
 --- | --- | ---
-points | array | ['0 20, 0 0, 100 0, 100 20','100 80, 100 100, 0 100, 0 80']
+points | array | [
+                    '0 20, 0 0, 100 0, 100 20',
+                    '100 80, 100 100, 0 100, 0 80'
+                  ]
 color | string | '#ffffff'
 stroke_width | int | 10
 duration | int | 1
