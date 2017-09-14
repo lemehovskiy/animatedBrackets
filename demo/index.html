@@ -109,8 +109,8 @@
 
 
 <script src="js/jquery-3.2.0.min.js"></script>
-<!--<script src="js/TweenLite.min.js"></script>-->
-<!--<script src="js/CSSPlugin.min.js"></script>-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
 
 <script src="../build/animatedBrackets.min.js"></script>
 
@@ -118,16 +118,25 @@
 <script>
 
     $('.section-intro .title').animatedBrackets();
-//
-//    $('.features-list .title').parallaxContent({
-//        duration: 2,
-//        shift: 15
-//    });
-//
-//    $('.features-list .img-col').parallaxContent({
-//        duration: 2,
-//        shift: -15
-//    });
+
+
+
+    $('.section-features .feature-item:nth-child(1) .title').animatedBrackets({
+        points: [
+            '0 20, 0 0, 100 0, 100 100, 0 100, 0 80'
+        ],
+        stroke_width: 8,
+        color: '#cacaca'
+    });
+
+    $('.section-features .feature-item:nth-child(2) .title').animatedBrackets();
+
+    $('.section-features .feature-item:nth-child(3) .title').animatedBrackets({
+        points: [
+            '100 80, 100 100, 0 100, 0 0, 100 0, 100 20'
+        ],
+        duration: 2
+    });
 
 </script>
 
