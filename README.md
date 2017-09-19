@@ -5,6 +5,13 @@ animatedBrackets
 
 [https://lemehovskiy.github.io/animatedBrackets/demo](https://lemehovskiy.github.io/animatedBrackets/demo/)
 
+### Package Managers
+
+```sh
+# NPM
+npm install animated_brackets
+```
+
 ### Settings
 
 Option | Type | Default
