@@ -2,7 +2,7 @@
   "name": "animated_brackets",
   "version": "1.0.0",
   "description": "animated brackets",
-  "main": "index.js",
+  "main": "build/animatedBrackets.js",
   "dependencies": {
     "jquery": ">=1.7",
     "gsap" : "1.20.2"
@@ -33,7 +33,9 @@
     "animation",
     "brackets",
     "gsap",
-    "jquery"
+    "jquery",
+    "TimelineLite",
+    "greensock"
   ],
   "repository": {
     "type": "git",
