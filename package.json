@@ -1,6 +1,6 @@
 {
   "name": "animated_brackets",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "animated brackets",
   "main": "build/animatedBrackets.js",
   "dependencies": {
