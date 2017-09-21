@@ -1,11 +1,11 @@
 {
   "name": "animated_brackets",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "animated brackets",
   "main": "build/animatedBrackets.js",
   "dependencies": {
     "jquery": ">=1.7",
-    "gsap" : "1.20.2"
+    "gsap": "1.20.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -44,4 +44,3 @@
   "author": "lemehovskiy",
   "license": "ISC"
 }
-
