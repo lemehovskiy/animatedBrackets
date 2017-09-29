@@ -30,6 +30,22 @@
             delay: 1
         }, options);
 
+        function get_path_length(path) {
+
+            var totalLength = 0;
+            var prevPos = void 0;
+            var polyline = path;
+            for (var i = 0; i < polyline.points.numberOfItems; i++) {
+                var pos = polyline.points.getItem(i);
+                if (i > 0) {
+                    totalLength += Math.sqrt(Math.pow(pos.x - prevPos.x, 2) + Math.pow(pos.y - prevPos.y, 2));
+                }
+                prevPos = pos;
+            }
+
+            return totalLength;
+        }
+
         $(this).each(function () {
 
             var $this = $(this),
@@ -124,8 +140,10 @@
 
                 var element = settings.element;
 
-                element.attr("stroke-dasharray", element.get(0).getTotalLength());
-                element.attr("stroke-dashoffset", element.get(0).getTotalLength());
+                var length = get_path_length(element.get(0));
+
+                element.attr("stroke-dasharray", length);
+                element.attr("stroke-dashoffset", length);
             }
         });
 

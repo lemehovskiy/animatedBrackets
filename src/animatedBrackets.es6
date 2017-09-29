@@ -33,6 +33,23 @@
         }, options);
 
 
+        function get_path_length(path) {
+
+            let totalLength = 0;
+            let prevPos;
+            let polyline = path;
+            for (let i = 0; i < polyline.points.numberOfItems; i++) {
+                let pos = polyline.points.getItem(i);
+                if (i > 0) {
+                    totalLength += Math.sqrt(Math.pow((pos.x - prevPos.x), 2) + Math.pow((pos.y - prevPos.y), 2));
+                }
+                prevPos = pos;
+            }
+
+            return totalLength;
+        }
+
+
         $(this).each(function () {
 
             let $this = $(this),
@@ -122,7 +139,7 @@
                         stroke_width: settings.stroke_width
                     });
 
-                    if (!is_animated){
+                    if (!is_animated) {
                         set_dash({
                             element: bracket.element,
                         });
@@ -134,12 +151,14 @@
 
             }
 
-            function set_dash(settings){
+            function set_dash(settings) {
 
                 let element = settings.element;
 
-                element.attr("stroke-dasharray", element.get(0).getTotalLength());
-                element.attr("stroke-dashoffset", element.get(0).getTotalLength());
+                let length = get_path_length(element.get(0));
+
+                element.attr("stroke-dasharray", length);
+                element.attr("stroke-dashoffset", length);
             }
 
         });
@@ -159,8 +178,7 @@
 
             element.attr("points", points_str);
 
-            element.attr("style", "stroke:"+settings.color+"; stroke-width:" + settings.stroke_width + "; fill:none"); //Set path's data
-
+            element.attr("style", "stroke:" + settings.color + "; stroke-width:" + settings.stroke_width + "; fill:none"); //Set path's data
 
 
         }
