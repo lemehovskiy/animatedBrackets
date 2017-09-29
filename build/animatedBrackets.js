@@ -30,22 +30,6 @@
             delay: 1
         }, options);
 
-        function get_path_length(path) {
-
-            var totalLength = 0;
-            var prevPos = void 0;
-            var polyline = path;
-            for (var i = 0; i < polyline.points.numberOfItems; i++) {
-                var pos = polyline.points.getItem(i);
-                if (i > 0) {
-                    totalLength += Math.sqrt(Math.pow(pos.x - prevPos.x, 2) + Math.pow(pos.y - prevPos.y, 2));
-                }
-                prevPos = pos;
-            }
-
-            return totalLength;
-        }
-
         $(this).each(function () {
 
             var $this = $(this),
@@ -54,8 +38,7 @@
                 brackets_config = [],
                 is_inited = false,
                 is_animated = false,
-                svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg")),
-                timeline = new TimelineLite();
+                svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
 
             //generate brackets config
             settings.points.forEach(function (points_str) {
@@ -104,14 +87,14 @@
             $(window).on('load scroll resize', function () {
 
                 if (is_inited && $this.isOnScreen(.5, .5) && !is_animated) {
-                    animate_brackets();
+                    animate_brackets({
+                        path: $this.find('polyline'),
+                        duration: settings.duration,
+                        delay: settings.delay
+                    });
                     is_animated = true;
                 }
             });
-
-            function animate_brackets() {
-                timeline.staggerTo($this.find('polyline'), settings.duration, { attr: { 'stroke-dashoffset': 0 } }, settings.delay);
-            }
 
             function draw_brackets() {
 
@@ -135,17 +118,40 @@
 
                 is_inited = true;
             }
-
-            function set_dash(settings) {
-
-                var element = settings.element;
-
-                var length = get_path_length(element.get(0));
-
-                element.attr("stroke-dasharray", length);
-                element.attr("stroke-dashoffset", length);
-            }
         });
+
+        function set_dash(settings) {
+
+            var element = settings.element;
+
+            var length = get_path_length(element.get(0));
+
+            element.attr("stroke-dasharray", length);
+            element.attr("stroke-dashoffset", length);
+        }
+
+        function get_path_length(path) {
+
+            var totalLength = 0;
+            var prevPos = void 0;
+            var polyline = path;
+            for (var i = 0; i < polyline.points.numberOfItems; i++) {
+                var pos = polyline.points.getItem(i);
+                if (i > 0) {
+                    totalLength += Math.sqrt(Math.pow(pos.x - prevPos.x, 2) + Math.pow(pos.y - prevPos.y, 2));
+                }
+                prevPos = pos;
+            }
+
+            return totalLength;
+        }
+
+        function animate_brackets(settings) {
+
+            var timeline = new TimelineLite();
+
+            timeline.staggerTo(settings.path, settings.duration, { attr: { 'stroke-dashoffset': 0 } }, settings.delay);
+        }
 
         function draw_polyline(settings) {
 

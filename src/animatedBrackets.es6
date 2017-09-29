@@ -33,23 +33,6 @@
         }, options);
 
 
-        function get_path_length(path) {
-
-            let totalLength = 0;
-            let prevPos;
-            let polyline = path;
-            for (let i = 0; i < polyline.points.numberOfItems; i++) {
-                let pos = polyline.points.getItem(i);
-                if (i > 0) {
-                    totalLength += Math.sqrt(Math.pow((pos.x - prevPos.x), 2) + Math.pow((pos.y - prevPos.y), 2));
-                }
-                prevPos = pos;
-            }
-
-            return totalLength;
-        }
-
-
         $(this).each(function () {
 
             let $this = $(this),
@@ -61,9 +44,7 @@
                 is_inited = false,
                 is_animated = false,
 
-                svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg")),
-
-                timeline = new TimelineLite();
+                svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
 
             //generate brackets config
             settings.points.forEach(function (points_str) {
@@ -115,16 +96,16 @@
             $(window).on('load scroll resize', function () {
 
                 if (is_inited && $this.isOnScreen(.5, .5) && !is_animated) {
-                    animate_brackets();
+                    animate_brackets({
+                        path: $this.find('polyline'),
+                        duration: settings.duration,
+                        delay: settings.delay
+                    });
                     is_animated = true;
                 }
 
             });
 
-
-            function animate_brackets() {
-                timeline.staggerTo($this.find('polyline'), settings.duration, {attr: {'stroke-dashoffset': 0}}, settings.delay);
-            }
 
             function draw_brackets() {
 
@@ -151,17 +132,42 @@
 
             }
 
-            function set_dash(settings) {
+        });
 
-                let element = settings.element;
+        function set_dash(settings) {
 
-                let length = get_path_length(element.get(0));
+            let element = settings.element;
 
-                element.attr("stroke-dasharray", length);
-                element.attr("stroke-dashoffset", length);
+            let length = get_path_length(element.get(0));
+
+            element.attr("stroke-dasharray", length);
+            element.attr("stroke-dashoffset", length);
+        }
+
+
+        function get_path_length(path) {
+
+            let totalLength = 0;
+            let prevPos;
+            let polyline = path;
+            for (let i = 0; i < polyline.points.numberOfItems; i++) {
+                let pos = polyline.points.getItem(i);
+                if (i > 0) {
+                    totalLength += Math.sqrt(Math.pow((pos.x - prevPos.x), 2) + Math.pow((pos.y - prevPos.y), 2));
+                }
+                prevPos = pos;
             }
 
-        });
+            return totalLength;
+        }
+
+        function animate_brackets(settings) {
+
+            let timeline = new TimelineLite();
+
+            timeline.staggerTo(settings.path, settings.duration, {attr: {'stroke-dashoffset': 0}}, settings.delay);
+        }
+
 
 
         function draw_polyline(settings) {
