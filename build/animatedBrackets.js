@@ -40,6 +40,10 @@
                 is_animated = false,
                 svgElement = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
 
+            if (settings.duration == 0) {
+                is_animated = true;
+            }
+
             //generate brackets config
             settings.points.forEach(function (points_str) {
 
